@@ -4,8 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/order-function.test.mjs",
+    "test": "node tests/order-function.test.mjs && node tests/worker.test.mjs",
     "serve": "python3 -m http.server 8788",
-    "deploy": "echo Cloudflare Pages deploys this static app from the repository output directory."
+    "deploy": "npx wrangler@4.109.0 deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.109.0"
   }
 }
