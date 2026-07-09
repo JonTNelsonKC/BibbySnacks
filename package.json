@@ -8,7 +8,7 @@
     "serve": "python3 -m http.server 8788",
     "deploy": "npx wrangler@4.109.0 pages deploy . --project-name bibby-snacks",
     "deploy:pages": "npx wrangler@4.109.0 pages deploy . --project-name bibby-snacks",
-    "deploy:worker": "npx wrangler@4.109.0 deploy"
+    "deploy:worker": "npx wrangler@4.109.0 deploy --config wrangler.worker.toml"
   },
   "devDependencies": {
     "wrangler": "4.109.0"
