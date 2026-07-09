@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/order-function.test.mjs",
+    "test": "node tests/order-function.test.mjs && node tests/worker.test.mjs",
     "serve": "python3 -m http.server 8788",
     "deploy": "wrangler pages deploy . --project-name bibby-snacks",
-    "deploy:pages": "wrangler pages deploy . --project-name bibby-snacks"
+    "deploy:pages": "wrangler pages deploy . --project-name bibby-snacks",
+    "deploy:worker": "wrangler deploy"
   }
 }
