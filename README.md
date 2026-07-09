@@ -17,7 +17,9 @@ Use these settings for a Pages project connected to this GitHub repository:
 - Functions directory: `functions`
 - Deploy command: leave blank for normal Pages Git deployments, or use `npm run deploy` for a manual Pages deploy command
 
-Do not use `npx wrangler deploy` as the Pages deploy command. That command deploys Workers, not Pages. If a Cloudflare build log still says `Executing user deploy command: npx wrangler deploy`, the Cloudflare dashboard setting is still overriding the repo scripts.
+Do not use `npx wrangler deploy` as the Pages deploy command. That command deploys Workers, not Pages. If a Cloudflare build log says `Executing user deploy command: npx wrangler deploy`, the Cloudflare dashboard setting is still overriding the repo scripts.
+
+If a Cloudflare build log says `sh: 1: wrangler: not found`, the deploy script is being run before Wrangler is available. This repo pins Wrangler in `devDependencies` and the deploy scripts call `npx wrangler@4.109.0` so Cloudflare can install and run it in the build image.
 
 If you are doing a manual Wrangler deploy to Pages instead of Git-connected Pages, use:
 
@@ -25,7 +27,7 @@ If you are doing a manual Wrangler deploy to Pages instead of Git-connected Page
 npm run deploy
 ```
 
-That script runs `wrangler pages deploy . --project-name bibby-snacks`.
+That script runs `npx wrangler@4.109.0 pages deploy . --project-name bibby-snacks`.
 
 Only `/api/order` invokes a Pages Function. Static files are served as static assets.
 
