@@ -7,12 +7,5 @@ pages_build_output_dir = "."
 # Configure ORDER_PIN in the Pages project settings.
 #
 # Webhook notification:
-# WEBHOOK_URL = "https://hooks.example.com/..."
-# WEBHOOK_KIND = "discord" # generic, discord, slack, or ntfy
-#
-# Cloudflare Email Service REST API notification:
-# CF_ACCOUNT_ID = "your-account-id"
-# ORDER_TO_EMAIL = "you@example.com"
-# ORDER_FROM_EMAIL = "snacks@yourdomain.com"
-#
-# Set CF_EMAIL_API_TOKEN as a Pages secret.
+# WEBHOOK_URL = "https://ntfy.sh/your-hard-to-guess-topic"
+# WEBHOOK_KIND = "ntfy" # generic, discord, slack, or ntfy
