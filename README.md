@@ -15,10 +15,11 @@ Use these settings for a Pages project connected to this GitHub repository:
 - Build output directory: `.`
 - Root directory: repository root
 - Functions directory: `functions`
+- Deploy command: leave blank for normal Pages Git deployments, or use `npm run deploy` for a manual Pages deploy command
 
-Do not use `npx wrangler deploy` as the Pages build or deploy command. That command deploys Workers and expects a Worker entry point or `[assets]` directory. For this repo, Cloudflare Pages should upload the static files directly and discover `functions/api/order.js` as a Pages Function.
+Do not use `npx wrangler deploy` as the Pages deploy command. That command deploys Workers, not Pages. If a Cloudflare build log still says `Executing user deploy command: npx wrangler deploy`, the Cloudflare dashboard setting is still overriding the repo scripts.
 
-If you are doing a manual Wrangler deploy instead of Git-connected Pages, use:
+If you are doing a manual Wrangler deploy to Pages instead of Git-connected Pages, use:
 
 ```sh
 npm run deploy
@@ -28,9 +29,15 @@ That script runs `wrangler pages deploy . --project-name bibby-snacks`.
 
 Only `/api/order` invokes a Pages Function. Static files are served as static assets.
 
+## Worker fallback
+
+The repo also includes `src/worker.js` and an `[assets]` section in `wrangler.toml` so `npx wrangler deploy` has a valid Worker entry point and static asset directory. This is a fallback for the current Cloudflare dashboard command; it deploys as a Worker with Static Assets, not as a normal Pages deployment.
+
+For this fallback path, `/api/order` is handled by the same order code used by the Pages Function, and all other requests are served from the static assets binding.
+
 ## Notifications
 
-Use at least one of these options in Pages project settings.
+Use at least one of these options in Pages or Workers environment settings.
 
 ### Webhook
 
@@ -52,7 +59,7 @@ On the Workers Free plan, Cloudflare Email Service can send free messages to ver
 
 ## Optional passcode
 
-Set `ORDER_PIN` as a Pages secret. The checkout passcode field is only enforced when that secret exists.
+Set `ORDER_PIN` as a Pages or Workers secret. The checkout passcode field is only enforced when that secret exists.
 
 ## Local checks
 
