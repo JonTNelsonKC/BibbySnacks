@@ -6,8 +6,11 @@
   "scripts": {
     "test": "node tests/order-function.test.mjs && node tests/worker.test.mjs",
     "serve": "python3 -m http.server 8788",
-    "deploy": "wrangler pages deploy . --project-name bibby-snacks",
-    "deploy:pages": "wrangler pages deploy . --project-name bibby-snacks",
-    "deploy:worker": "wrangler deploy"
+    "deploy": "npx wrangler@4.109.0 pages deploy . --project-name bibby-snacks",
+    "deploy:pages": "npx wrangler@4.109.0 pages deploy . --project-name bibby-snacks",
+    "deploy:worker": "npx wrangler@4.109.0 deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.109.0"
   }
 }
