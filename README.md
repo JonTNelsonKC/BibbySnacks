@@ -15,11 +15,13 @@ Use these settings for a Pages project connected to this GitHub repository:
 - Build output directory: `.`
 - Root directory: repository root
 - Functions directory: `functions`
-- Deploy command: leave blank for normal Pages Git deployments, or use `npm run deploy` for a manual Pages deploy command
+- Deploy command: leave blank for normal Pages Git deployments, or use `npm run deploy` only for a manual Wrangler Pages deploy command
 
 Do not use `npx wrangler deploy` as the Pages deploy command. That command deploys Workers, not Pages. If a Cloudflare build log says `Executing user deploy command: npx wrangler deploy`, the Cloudflare dashboard setting is still overriding the repo scripts.
 
 If a Cloudflare build log says `sh: 1: wrangler: not found`, the deploy script is being run before Wrangler is available. This repo pins Wrangler in `devDependencies` and the deploy scripts call `npx wrangler@4.109.0` so Cloudflare can install and run it in the build image.
+
+If a Cloudflare build log says `Authentication error [code: 10000]` while running `wrangler pages deploy`, the `CLOUDFLARE_API_TOKEN` in the build environment does not have permission to deploy Pages. Either remove the custom deploy command and let Git-connected Pages deploy automatically, or update the token with Pages edit/write access for the correct account.
 
 If you are doing a manual Wrangler deploy to Pages instead of Git-connected Pages, use:
 
@@ -33,7 +35,7 @@ Only `/api/order` invokes a Pages Function. Static files are served as static as
 
 ## Worker fallback
 
-The repo also includes `src/worker.js` and an `[assets]` section in `wrangler.toml` so `npx wrangler deploy` has a valid Worker entry point and static asset directory. This is a fallback for the current Cloudflare dashboard command; it deploys as a Worker with Static Assets, not as a normal Pages deployment.
+The repo also includes `src/worker.js` and `wrangler.worker.toml` so `npm run deploy:worker` has a valid Worker entry point and static asset directory. This is a fallback if you want to deploy as a Worker with Static Assets, not as a normal Pages deployment.
 
 For this fallback path, `/api/order` is handled by the same order code used by the Pages Function, and all other requests are served from the static assets binding.
 
