@@ -41,25 +41,22 @@ For this fallback path, `/api/order` is handled by the same order code used by t
 
 ## Notifications
 
-Use at least one of these options in Pages or Workers environment settings.
+This app does not send email. It only sends webhook-style notifications.
 
-### Webhook
+Recommended phone push setup: use `ntfy`.
 
-Set:
+1. Install the ntfy app or open the ntfy web app.
+2. Subscribe to a hard-to-guess topic, for example `bibby-snacks-8f4c2b7a`.
+3. In Cloudflare Pages environment variables, set:
 
-- `WEBHOOK_URL`
-- `WEBHOOK_KIND`: `generic`, `discord`, `slack`, or `ntfy`
+```text
+WEBHOOK_URL=https://ntfy.sh/bibby-snacks-8f4c2b7a
+WEBHOOK_KIND=ntfy
+```
 
-### Cloudflare Email Service REST API
+The public `ntfy.sh` service treats the topic like a password, so do not use an obvious topic name. A private/self-hosted ntfy server also works; set `WEBHOOK_URL` to that topic URL.
 
-Set:
-
-- `CF_ACCOUNT_ID`
-- `CF_EMAIL_API_TOKEN` as a secret
-- `ORDER_TO_EMAIL`
-- `ORDER_FROM_EMAIL`
-
-On the Workers Free plan, Cloudflare Email Service can send free messages to verified destination addresses. Sending to arbitrary recipients requires Workers Paid.
+Other supported webhook kinds are `generic`, `discord`, and `slack`.
 
 ## Optional passcode
 
