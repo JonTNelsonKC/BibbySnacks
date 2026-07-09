@@ -1,16 +1,10 @@
 name = "bibby-snacks"
 compatibility_date = "2026-07-09"
-main = "src/worker.js"
-
-[assets]
-directory = "."
-binding = "ASSETS"
-run_worker_first = ["/api/*"]
+pages_build_output_dir = "."
 
 [vars]
-# Optional shared passcode. Prefer setting it as a Pages or Workers secret instead of here.
-# Pages: configure ORDER_PIN in the Pages project settings.
-# Workers fallback: wrangler secret put ORDER_PIN
+# Optional shared passcode. Prefer setting it as a Pages secret instead of here.
+# Configure ORDER_PIN in the Pages project settings.
 #
 # Webhook notification:
 # WEBHOOK_URL = "https://hooks.example.com/..."
@@ -21,4 +15,4 @@ run_worker_first = ["/api/*"]
 # ORDER_TO_EMAIL = "you@example.com"
 # ORDER_FROM_EMAIL = "snacks@yourdomain.com"
 #
-# Set CF_EMAIL_API_TOKEN as a Pages or Workers secret.
+# Set CF_EMAIL_API_TOKEN as a Pages secret.
