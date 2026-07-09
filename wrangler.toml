@@ -1,10 +1,15 @@
 name = "bibby-snacks"
 compatibility_date = "2026-07-09"
-pages_build_output_dir = "."
+main = "src/worker.js"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
 
 [vars]
-# Optional shared passcode. Prefer setting it as a Pages secret instead of here.
-# Configure ORDER_PIN in the Pages project settings.
+# Optional shared passcode. Prefer setting it as a Worker secret instead of here:
+# wrangler secret put ORDER_PIN
 #
 # Webhook notification:
 # WEBHOOK_URL = "https://ntfy.sh/your-hard-to-guess-topic"
