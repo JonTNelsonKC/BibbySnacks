@@ -8,9 +8,23 @@ Update the `SNACKS` array at the top of `app.js`.
 
 ## Cloudflare Pages
 
-- Build command: leave blank
+Use these settings for a Pages project connected to this GitHub repository:
+
+- Framework preset: `None`
+- Build command: leave blank, or use `exit 0` if Cloudflare requires a command
 - Build output directory: `.`
+- Root directory: repository root
 - Functions directory: `functions`
+
+Do not use `npx wrangler deploy` as the Pages build or deploy command. That command deploys Workers and expects a Worker entry point or `[assets]` directory. For this repo, Cloudflare Pages should upload the static files directly and discover `functions/api/order.js` as a Pages Function.
+
+If you are doing a manual Wrangler deploy instead of Git-connected Pages, use:
+
+```sh
+npm run deploy
+```
+
+That script runs `wrangler pages deploy . --project-name bibby-snacks`.
 
 Only `/api/order` invokes a Pages Function. Static files are served as static assets.
 
