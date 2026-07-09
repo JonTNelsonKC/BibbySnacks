@@ -1,0 +1,16 @@
+.git
+.git/**
+.github
+.github/**
+node_modules
+node_modules/**
+functions
+functions/**
+src
+src/**
+tests
+tests/**
+README.md
+package.json
+wrangler.toml
+.assetsignore
