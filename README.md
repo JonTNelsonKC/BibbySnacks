@@ -15,21 +15,11 @@ Use these settings for a Pages project connected to this GitHub repository:
 - Build output directory: `.`
 - Root directory: repository root
 - Functions directory: `functions`
-- Deploy command: leave blank for normal Pages Git deployments, or use `npm run deploy` only for a manual Wrangler Pages deploy command
+- Deploy command: leave blank. If the dashboard currently runs `npm run deploy`, that script is intentionally a no-op so Git-connected Pages can finish without a Wrangler API token.
 
-Do not use `npx wrangler deploy` as the Pages deploy command. That command deploys Workers, not Pages. If a Cloudflare build log says `Executing user deploy command: npx wrangler deploy`, the Cloudflare dashboard setting is still overriding the repo scripts.
+Do not use `npx wrangler deploy` as the Pages deploy command. That command deploys Workers, not Pages. If a Cloudflare build log says `Executing user deploy command: npx wrangler deploy`, the Cloudflare dashboard setting is still overriding the Pages flow.
 
-If a Cloudflare build log says `sh: 1: wrangler: not found`, the deploy script is being run before Wrangler is available. This repo pins Wrangler in `devDependencies` and the deploy scripts call `npx wrangler@4.109.0` so Cloudflare can install and run it in the build image.
-
-If a Cloudflare build log says `Authentication error [code: 10000]` while running `wrangler pages deploy`, the `CLOUDFLARE_API_TOKEN` in the build environment does not have permission to deploy Pages. Either remove the custom deploy command and let Git-connected Pages deploy automatically, or update the token with Pages edit/write access for the correct account.
-
-If you are doing a manual Wrangler deploy to Pages instead of Git-connected Pages, use:
-
-```sh
-npm run deploy
-```
-
-That script runs `npx wrangler@4.109.0 pages deploy . --project-name bibby-snacks`.
+If a Cloudflare build log says `Authentication error [code: 10000]` while running `wrangler pages deploy`, the build is trying to do a manual Wrangler deploy from inside Cloudflare. Remove the custom deploy command and let Git-connected Pages deploy automatically. If you truly need manual Wrangler deploys, use `npm run deploy:pages` locally or in CI with a Cloudflare API token that has Pages write access.
 
 Only `/api/order` invokes a Pages Function. Static files are served as static assets.
 
