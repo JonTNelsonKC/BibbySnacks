@@ -1,33 +1,23 @@
 # BibbySnacks
 
-A tiny Cloudflare Pages app for choosing afternoon snacks, reviewing checkout, and sending an order notification.
-
-## Edit the menu
-
-Update the `SNACKS` array at the top of `app.js`.
+A tiny Cloudflare Pages app for choosing afternoon snacks, reviewing checkout, and sending a push/webhook notification.
 
 ## Cloudflare Pages
 
-Use these settings for a Pages project connected to this GitHub repository:
+This repository is meant to deploy with the default Cloudflare Pages Git integration. Do not manually deploy with Wrangler from the Pages build.
+
+Use these Cloudflare Pages settings:
 
 - Framework preset: `None`
-- Build command: leave blank, or use `exit 0` if Cloudflare requires a command
+- Build command: leave blank, or use `exit 0`
 - Build output directory: `.`
 - Root directory: repository root
 - Functions directory: `functions`
-- Deploy command: leave blank. If the dashboard currently runs `npm run deploy`, that script is intentionally a no-op so Git-connected Pages can finish without a Wrangler API token.
+- Deploy command: leave blank
 
-Do not use `npx wrangler deploy` as the Pages deploy command. That command deploys Workers, not Pages. If a Cloudflare build log says `Executing user deploy command: npx wrangler deploy`, the Cloudflare dashboard setting is still overriding the Pages flow.
+For this no-framework static app, Cloudflare's own docs say to leave the Build command blank, or use `exit 0` if a command is required. After the build exits successfully, Pages uploads the configured output directory. The app files live at the repository root, so the output directory is `.`.
 
-If a Cloudflare build log says `Authentication error [code: 10000]` while running `wrangler pages deploy`, the build is trying to do a manual Wrangler deploy from inside Cloudflare. Remove the custom deploy command and let Git-connected Pages deploy automatically. If you truly need manual Wrangler deploys, use `npm run deploy:pages` locally or in CI with a Cloudflare API token that has Pages write access.
-
-Only `/api/order` invokes a Pages Function. Static files are served as static assets.
-
-## Worker fallback
-
-The repo also includes `src/worker.js` and `wrangler.worker.toml` so `npm run deploy:worker` has a valid Worker entry point and static asset directory. This is a fallback if you want to deploy as a Worker with Static Assets, not as a normal Pages deployment.
-
-For this fallback path, `/api/order` is handled by the same order code used by the Pages Function, and all other requests are served from the static assets binding.
+If the dashboard still insists on running `npm run deploy`, that script is intentionally a no-op that exits successfully. It does not call Wrangler and does not need a Cloudflare API token.
 
 ## Notifications
 
@@ -50,7 +40,11 @@ Other supported webhook kinds are `generic`, `discord`, and `slack`.
 
 ## Optional passcode
 
-Set `ORDER_PIN` as a Pages or Workers secret. The checkout passcode field is only enforced when that secret exists.
+Set `ORDER_PIN` as a Pages secret. The checkout passcode field is only enforced when that secret exists.
+
+## Edit the menu
+
+Update the `SNACKS` array at the top of `app.js`.
 
 ## Local checks
 
