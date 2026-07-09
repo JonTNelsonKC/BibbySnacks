@@ -1,0 +1,10 @@
+{
+  "name": "bibby-snacks",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/order-function.test.mjs",
+    "serve": "python3 -m http.server 8788"
+  }
+}

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BibbySnacks</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="order-panel" aria-labelledby="page-title">
+        <header class="app-header">
+          <div>
+            <p class="eyebrow">Afternoon snack dispatch</p>
+            <h1 id="page-title">What sounds good?</h1>
+          </div>
+          <div class="status-pill" aria-live="polite">
+            <span id="item-count">0</span>
+            <span>selected</span>
+          </div>
+        </header>
+
+        <form id="snack-form" novalidate>
+          <input
+            class="visually-hidden"
+            id="website"
+            name="website"
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          >
+
+          <section class="section-block" aria-labelledby="favorites-title">
+            <div class="section-heading">
+              <h2 id="favorites-title">Usual snacks</h2>
+            </div>
+            <div id="snack-grid" class="snack-grid"></div>
+          </section>
+
+          <section class="section-block" aria-labelledby="custom-title">
+            <div class="section-heading">
+              <h2 id="custom-title">Custom request</h2>
+            </div>
+            <div class="custom-card">
+              <label for="custom-name">Snack</label>
+              <textarea id="custom-name" name="customName" rows="3" placeholder="Something special"></textarea>
+
+              <div class="inline-fields">
+                <div>
+                  <label for="custom-quantity">Quantity</label>
+                  <input id="custom-quantity" name="customQuantity" type="number" min="1" max="9" value="1">
+                </div>
+                <div>
+                  <label for="order-note">Note</label>
+                  <input id="order-note" name="orderNote" type="text" maxlength="180" placeholder="Cold, toasted, extra napkins...">
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+      </section>
+
+      <aside class="checkout-panel" aria-labelledby="checkout-title">
+        <div class="checkout-inner">
+          <div class="section-heading">
+            <h2 id="checkout-title">Checkout</h2>
+          </div>
+
+          <div id="summary-empty" class="empty-summary">
+            Add a snack to start an order.
+          </div>
+
+          <ul id="summary-list" class="summary-list" aria-live="polite"></ul>
+
+          <div class="checkout-controls">
+            <label for="pin">Passcode</label>
+            <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="one-time-code" placeholder="Optional">
+
+            <div class="remember-row">
+              <input id="remember-pin" type="checkbox">
+              <label for="remember-pin">Remember on this device</label>
+            </div>
+
+            <button id="place-order" class="primary-button" type="button" disabled>
+              Place order
+            </button>
+            <button id="clear-order" class="secondary-button" type="button" disabled>
+              Clear
+            </button>
+          </div>
+
+          <p id="order-message" class="order-message" role="status" aria-live="polite"></p>
+        </div>
+      </aside>
+    </main>
+
+    <template id="snack-card-template">
+      <article class="snack-card">
+        <div class="snack-copy">
+          <h3></h3>
+          <p></p>
+        </div>
+        <div class="quantity-control">
+          <button class="step-button decrement" type="button" aria-label="">-</button>
+          <output>0</output>
+          <button class="step-button increment" type="button" aria-label="">+</button>
+        </div>
+      </article>
+    </template>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

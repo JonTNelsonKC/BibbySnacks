@@ -1,0 +1,18 @@
+name = "bibby-snacks"
+compatibility_date = "2026-07-09"
+pages_build_output_dir = "."
+
+[vars]
+# Optional shared passcode. Prefer setting it as a Pages secret instead of here:
+# wrangler pages secret put ORDER_PIN
+#
+# Webhook notification:
+# WEBHOOK_URL = "https://hooks.example.com/..."
+# WEBHOOK_KIND = "discord" # generic, discord, slack, or ntfy
+#
+# Cloudflare Email Service REST API notification:
+# CF_ACCOUNT_ID = "your-account-id"
+# ORDER_TO_EMAIL = "you@example.com"
+# ORDER_FROM_EMAIL = "snacks@yourdomain.com"
+#
+# Set CF_EMAIL_API_TOKEN as a Pages secret.
