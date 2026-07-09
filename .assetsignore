@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+functions
+src
+tests
+README.md
+package.json
+wrangler.toml
+.assetsignore
