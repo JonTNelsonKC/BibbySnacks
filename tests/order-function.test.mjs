@@ -63,6 +63,32 @@ async function testSendsWebhook() {
   assert.match(calls[0].init.body, /Popcorn/);
 }
 
+async function testSendsNtfyWebhook() {
+  const calls = [];
+  globalThis.fetch = async (url, init) => {
+    calls.push({ url, init });
+    return new Response("ok", { status: 200 });
+  };
+
+  const response = await onRequestPost({
+    request: request({
+      items: [{ name: "Tea", quantity: 1 }],
+    }),
+    env: {
+      WEBHOOK_URL: "https://ntfy.sh/bibby-snacks-private-topic",
+      WEBHOOK_KIND: "ntfy",
+    },
+  });
+
+  const body = await readJson(response);
+  assert.equal(response.status, 200);
+  assert.equal(body.notification, "webhook:ntfy");
+  assert.equal(calls[0].init.method, "POST");
+  assert.equal(calls[0].init.headers.Title, "Snack order: 1 item");
+  assert.equal(calls[0].init.headers.Priority, "4");
+  assert.match(calls[0].init.body, /1x Tea/);
+}
+
 async function testDryRunWhenUnconfigured() {
   const response = await onRequestPost({
     request: request({ items: [{ name: "Chocolate", quantity: 1 }] }),
@@ -99,6 +125,7 @@ try {
   await testRejectsEmptyOrders();
   await testRequiresPinWhenConfigured();
   await testSendsWebhook();
+  await testSendsNtfyWebhook();
   await testDryRunWhenUnconfigured();
   testNormalization();
   testNotificationText();
