@@ -13,4 +13,5 @@ tests/**
 README.md
 package.json
 wrangler.toml
+wrangler.worker.toml
 .assetsignore
