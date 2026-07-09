@@ -1,23 +1,23 @@
 # BibbySnacks
 
-A tiny Cloudflare Pages app for choosing afternoon snacks, reviewing checkout, and sending a push/webhook notification.
+A tiny Cloudflare Worker app for choosing afternoon snacks, reviewing checkout, and sending a push/webhook notification.
 
-## Cloudflare Pages
+## Production Deployment
 
-This repository is meant to deploy with the default Cloudflare Pages Git integration. Do not manually deploy with Wrangler from the Pages build.
+The production route `bibbysnacks.jontnelsonkc.workers.dev` is a Cloudflare Workers route. This repo deploys as a Worker with Static Assets:
 
-Use these Cloudflare Pages settings:
+- `wrangler.toml` sets `main = "src/worker.js"`
+- `[assets]` serves the static app files from the repository root
+- `run_worker_first = ["/api/*"]` routes `/api/order` through the Worker before static assets
+- `src/worker.js` passes `/api/order` to `functions/api/order.js` and serves all other routes from `ASSETS`
 
-- Framework preset: `None`
-- Build command: leave blank, or use `exit 0`
-- Build output directory: `.`
-- Root directory: repository root
-- Functions directory: `functions`
-- Deploy command: leave blank
+Cloudflare deploy command:
 
-For this no-framework static app, Cloudflare's own docs say to leave the Build command blank, or use `exit 0` if a command is required. After the build exits successfully, Pages uploads the configured output directory. The app files live at the repository root, so the output directory is `.`.
+```sh
+npx wrangler deploy
+```
 
-If the dashboard still insists on running `npm run deploy`, that script is intentionally a no-op that exits successfully. It does not call Wrangler and does not need a Cloudflare API token.
+If the dashboard runs `npm run deploy`, that script runs the same Wrangler deploy command.
 
 ## Notifications
 
@@ -27,7 +27,7 @@ Recommended phone push setup: use `ntfy`.
 
 1. Install the ntfy app or open the ntfy web app.
 2. Subscribe to a hard-to-guess topic, for example `bibby-snacks-8f4c2b7a`.
-3. In Cloudflare Pages environment variables, set:
+3. In Cloudflare Workers environment variables, set:
 
 ```text
 WEBHOOK_URL=https://ntfy.sh/bibby-snacks-8f4c2b7a
@@ -40,7 +40,7 @@ Other supported webhook kinds are `generic`, `discord`, and `slack`.
 
 ## Optional passcode
 
-Set `ORDER_PIN` as a Pages secret. The checkout passcode field is only enforced when that secret exists.
+Set `ORDER_PIN` as a Worker secret. The checkout passcode field is only enforced when that secret exists.
 
 ## Edit the menu
 
