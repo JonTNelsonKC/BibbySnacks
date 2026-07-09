@@ -116,9 +116,6 @@ export function buildNotification(order) {
   return {
     subject: `Snack order: ${order.items.length} item${order.items.length === 1 ? "" : "s"}`,
     text,
-    html: `<h1>Afternoon snack order</h1>${order.items
-      .map((item) => `<p><strong>${item.quantity}x</strong> ${escapeHtml(item.custom ? `Custom: ${item.name}` : item.name)}</p>`)
-      .join("")}${order.note ? `<p><strong>Note:</strong> ${escapeHtml(order.note)}</p>` : ""}<p><small>Placed: ${escapeHtml(formatPlacedAt(order.placedAt))}</small></p>`,
   };
 }
 
@@ -133,29 +130,11 @@ function formatPlacedAt(value) {
   }).format(date);
 }
 
-function escapeHtml(value) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
 async function sendNotifications(env, notification, order) {
   const jobs = [];
 
   if (env.WEBHOOK_URL) {
     jobs.push(sendWebhook(env, notification, order));
-  }
-
-  if (
-    env.CF_ACCOUNT_ID &&
-    env.CF_EMAIL_API_TOKEN &&
-    env.ORDER_TO_EMAIL &&
-    env.ORDER_FROM_EMAIL
-  ) {
-    jobs.push(sendCloudflareEmail(env, notification));
   }
 
   return Promise.all(jobs);
@@ -210,30 +189,6 @@ function webhookRequest(kind, notification, order) {
       text: notification.text,
       order,
     }),
-  };
-}
-
-async function sendCloudflareEmail(env, notification) {
-  const endpoint = `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`;
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.CF_EMAIL_API_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      to: env.ORDER_TO_EMAIL,
-      from: env.ORDER_FROM_EMAIL,
-      subject: notification.subject,
-      html: notification.html,
-      text: notification.text,
-    }),
-  });
-
-  return {
-    channel: "cloudflare-email",
-    ok: response.ok,
-    status: response.status,
   };
 }
 
